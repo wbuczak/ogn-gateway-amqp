@@ -1,0 +1,2 @@
+# this class implements OGN aircraft beacon forwarder to RabbitMQ broker
+org.ogn.gateway.plugin.amqp.AmqpForwarder
