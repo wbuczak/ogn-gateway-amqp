@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
 @Service
+@ManagedResource(objectName = "org.ogn.gateway.plugin.amqp:name=AmqpSender")
 public class AmqpSender implements MsgSender {
 
 	private static final Logger LOG = LoggerFactory.getLogger(AmqpSender.class);
@@ -24,10 +26,10 @@ public class AmqpSender implements MsgSender {
 
 	@Value("${ogn.amqp.queue.receivers:ogn.beacons.receivers}")
 	private String receiversQueueName;
-
+	
 	@Override
 	public void send(AircraftBeacon beacon, AircraftDescriptor descriptor) {
-		LOG.info("sending aircraft beacon id: {} to queue: {}", beacon.getId(), aircartQueueName);
+		LOG.trace("sending aircraft beacon id: {} to queue: {}", beacon.getId(), aircartQueueName);
 		rabbitTemplate.convertAndSend(aircartQueueName, JsonUtils.toJson(new AircraftBeaconWithDescriptor(beacon, descriptor)));
 	}
 

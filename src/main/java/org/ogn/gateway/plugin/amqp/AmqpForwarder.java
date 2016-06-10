@@ -27,6 +27,8 @@ public class AmqpForwarder implements OgnAircraftBeaconForwarder {
 
 	private volatile boolean initialized = false;
 
+	private ClassPathXmlApplicationContext ctx;
+
 	@Override
 	public String getName() {
 		return SERVICE_NAME + " forwarder";
@@ -48,17 +50,16 @@ public class AmqpForwarder implements OgnAircraftBeaconForwarder {
 		LOG.debug("initializing..");
 		if (!initialized) {
 
-			try (ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext(
-					"classpath:amqp-application-context.xml")) {
+			try {
+				ctx = new ClassPathXmlApplicationContext("classpath:amqp-application-context.xml");
 
 				ctx.refresh();
-
-				ctx.close();
-
 				forwarder = ctx.getBean(MsgSender.class);
 
 				initialized = true;
 				LOG.debug("initialization done");
+			} catch (Exception ex) {
+				LOG.error("could not initialize context", ex);
 			}
 		}
 	}
@@ -72,6 +73,8 @@ public class AmqpForwarder implements OgnAircraftBeaconForwarder {
 
 	@Override
 	public void stop() {
+		if (ctx != null)
+			ctx.close();
 	}
 
 	/**
@@ -85,13 +88,4 @@ public class AmqpForwarder implements OgnAircraftBeaconForwarder {
 	public void onBeacon(AircraftBeacon beacon, AircraftDescriptor descriptor) {
 		forwarder.send(beacon, descriptor);
 	}
-
-	// public static void main(String[] args) throws Exception {
-	// AmqpForwarder forwarder = new AmqpForwarder();
-	// forwarder.init();
-	//
-	// forwarder.onBeacon(null, null);
-	//
-	// Thread.sleep(Long.MAX_VALUE);
-	// }
 }
