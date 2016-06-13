@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jmx.export.annotation.ManagedAttribute;
 import org.springframework.jmx.export.annotation.ManagedResource;
 import org.springframework.stereotype.Service;
 
@@ -38,5 +39,16 @@ public class AmqpSender implements MsgSender {
 		LOG.trace("sending receiver beacon id: {} to queue: {}", beacon.getId(), receiversQueueName);
 		rabbitTemplate.convertAndSend(aircartQueueName, JsonUtils.toJson(beacon));
 	}
+	
 
+	@ManagedAttribute
+	public String getAircartQueueName() {
+		return aircartQueueName;
+	}
+
+	@ManagedAttribute
+	public String getReceiversQueueName() {
+		return receiversQueueName;
+	}
+		
 }
