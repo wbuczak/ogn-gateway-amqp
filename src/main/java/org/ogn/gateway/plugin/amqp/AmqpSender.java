@@ -1,4 +1,7 @@
 package org.ogn.gateway.plugin.amqp;
+
+import java.util.Optional;
+
 import org.ogn.commons.beacon.AircraftBeacon;
 import org.ogn.commons.beacon.AircraftBeaconWithDescriptor;
 import org.ogn.commons.beacon.AircraftDescriptor;
@@ -17,21 +20,22 @@ import org.springframework.stereotype.Service;
 @ManagedResource(objectName = "org.ogn.gateway.plugin.amqp:name=AmqpSender")
 public class AmqpSender implements MsgSender {
 
-	private static final Logger LOG = LoggerFactory.getLogger(AmqpSender.class);
+	private static final Logger	LOG	= LoggerFactory.getLogger(AmqpSender.class);
 
 	@Autowired
-	private AmqpTemplate rabbitTemplate;
+	private AmqpTemplate		rabbitTemplate;
 
 	@Value("${ogn.amqp.queue.aircraft:ogn.beacons.aircraft}")
-	private String aircartQueueName;
+	private String				aircartQueueName;
 
 	@Value("${ogn.amqp.queue.receivers:ogn.beacons.receivers}")
-	private String receiversQueueName;
-	
+	private String				receiversQueueName;
+
 	@Override
-	public void send(AircraftBeacon beacon, AircraftDescriptor descriptor) {
+	public void send(AircraftBeacon beacon, Optional<AircraftDescriptor> descriptor) {
 		LOG.trace("sending aircraft beacon id: {} to queue: {}", beacon.getId(), aircartQueueName);
-		rabbitTemplate.convertAndSend(aircartQueueName, JsonUtils.toJson(new AircraftBeaconWithDescriptor(beacon, descriptor)));
+		rabbitTemplate.convertAndSend(aircartQueueName,
+				JsonUtils.toJson(new AircraftBeaconWithDescriptor(beacon, descriptor.orElse(null))));
 	}
 
 	@Override
@@ -39,7 +43,6 @@ public class AmqpSender implements MsgSender {
 		LOG.trace("sending receiver beacon id: {} to queue: {}", beacon.getId(), receiversQueueName);
 		rabbitTemplate.convertAndSend(aircartQueueName, JsonUtils.toJson(beacon));
 	}
-	
 
 	@ManagedAttribute
 	public String getAircartQueueName() {
@@ -50,5 +53,5 @@ public class AmqpSender implements MsgSender {
 	public String getReceiversQueueName() {
 		return receiversQueueName;
 	}
-		
+
 }

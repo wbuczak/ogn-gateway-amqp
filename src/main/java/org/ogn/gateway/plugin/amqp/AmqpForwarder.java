@@ -4,6 +4,8 @@
 
 package org.ogn.gateway.plugin.amqp;
 
+import java.util.Optional;
+
 import org.ogn.commons.beacon.AircraftBeacon;
 import org.ogn.commons.beacon.AircraftDescriptor;
 import org.ogn.commons.beacon.forwarder.OgnAircraftBeaconForwarder;
@@ -85,7 +87,7 @@ public class AmqpForwarder implements OgnAircraftBeaconForwarder {
 	}
 
 	@Override
-	public void onBeacon(AircraftBeacon beacon, AircraftDescriptor descriptor) {
+	public void onBeacon(AircraftBeacon beacon, Optional<AircraftDescriptor> descriptor) {
 		forwarder.send(beacon, descriptor);
 	}
 }
