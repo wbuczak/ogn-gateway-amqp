@@ -12,5 +12,6 @@ import org.ogn.commons.beacon.ReceiverBeacon;
 
 public interface MsgSender {
 	void send(AircraftBeacon beacon, Optional<AircraftDescriptor> descriptor);
+
 	void send(ReceiverBeacon beacon);
 }

@@ -19,29 +19,29 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration({ "classpath:amqp-application-context.xml", "classpath:rabbit-context-subscriber.xml" })
+@ContextConfiguration({"classpath:amqp-application-context.xml", "classpath:rabbit-context-subscriber.xml"})
 public class ReceiverTest {
 
 	@Autowired
-	MsgSender sender;
+	MsgSender		sender;
 
 	@Autowired
-	AmqpReceiver receiver;
+	AmqpReceiver	receiver;
 
 	@Test
 	public void test() throws Exception {
 
-//		Path p = Paths.get(getClass().getResource("/test-aircraft-beacons.txt").toURI());
-//		List<String> aprsSentences = Files.readAllLines(p, Charset.defaultCharset());
-//
-//		Files.lines(p).forEach(l -> {
-//			sender.send(new AprsAircraftBeacon(l), AircraftDescriptorImpl.UNKNOWN_AIRCRAFT_DESCRIPTOR);
-//		});
-//
-//		Thread.sleep(5000);
+		// Path p = Paths.get(getClass().getResource("/test-aircraft-beacons.txt").toURI());
+		// List<String> aprsSentences = Files.readAllLines(p, Charset.defaultCharset());
+		//
+		// Files.lines(p).forEach(l -> {
+		// sender.send(new AprsAircraftBeacon(l), AircraftDescriptorImpl.UNKNOWN_AIRCRAFT_DESCRIPTOR);
+		// });
+		//
+		// Thread.sleep(5000);
 
-		//assertEquals(aprsSentences.size(), receiver.getCounter());
-		
+		// assertEquals(aprsSentences.size(), receiver.getCounter());
+
 		Thread.sleep(Long.MAX_VALUE);
 	}
 

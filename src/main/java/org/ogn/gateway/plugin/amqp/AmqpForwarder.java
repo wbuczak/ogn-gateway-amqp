@@ -20,16 +20,16 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class AmqpForwarder implements OgnAircraftBeaconForwarder {
 
-	public static final String SERVICE_NAME = "RabbitMQ";
-	public static final String VERSION = "1.0.0";
+	public static final String				SERVICE_NAME	= "RabbitMQ";
+	public static final String				VERSION			= "1.0.0";
 
-	private static final Logger LOG = LoggerFactory.getLogger(AmqpForwarder.class);
+	private static final Logger				LOG				= LoggerFactory.getLogger(AmqpForwarder.class);
 
-	private MsgSender forwarder;
+	private MsgSender						forwarder;
 
-	private volatile boolean initialized = false;
+	private volatile boolean				initialized		= false;
 
-	private ClassPathXmlApplicationContext ctx;
+	private ClassPathXmlApplicationContext	ctx;
 
 	@Override
 	public String getName() {
