@@ -35,7 +35,7 @@ public class AmqpSender implements MsgSender {
 	public void send(AircraftBeacon beacon, Optional<AircraftDescriptor> descriptor) {
 		LOG.trace("sending aircraft beacon id: {} to queue: {}", beacon.getId(), aircartQueueName);
 		rabbitTemplate.convertAndSend(aircartQueueName,
-				JsonUtils.toJson(new AircraftBeaconWithDescriptor(beacon, descriptor.orElse(null))));
+				JsonUtils.toJson(new AircraftBeaconWithDescriptor(beacon, descriptor)));
 	}
 
 	@Override
